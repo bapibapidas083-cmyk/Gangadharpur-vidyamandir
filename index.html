@@ -1,373 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube SEO Studio | Description, Caption & Tag Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .tag-pill {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #fca5a5;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #111827, #1f2937);
+      color: #f8fafc;
+    }
+
+    .calculator {
+      width: min(92vw, 360px);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .display {
+      width: 100%;
+      min-height: 90px;
+      border: none;
+      border-radius: 16px;
+      background: rgba(30, 41, 59, 0.9);
+      color: #f8fafc;
+      font-size: 2rem;
+      text-align: right;
+      padding: 18px 16px;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 18px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .operator,
+    .action {
+      background: #f59e0b;
+      color: #111827;
+    }
+
+    .number {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    .equal {
+      background: #22c55e;
+      color: #042f2e;
+      grid-column: span 2;
+    }
+
+    .clear {
+      background: #ef4444;
+      color: white;
+    }
+  </style>
 </head>
-<body class="min-h-screen pb-16">
+<body>
+  <div class="calculator">
+    <input class="display" id="display" type="text" readonly value="0" />
 
-    <!-- Navbar -->
-    <nav class="border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-red-600 p-2 rounded-lg text-white">
-                    <i class="fa-brands fa-youtube text-2xl"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight">Tube<span class="text-red-500">Boost</span> AI</span>
-            </div>
-            <span class="text-xs font-medium bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700">
-                SEO Metadata Generator
-            </span>
-        </div>
-    </nav>
+    <div class="buttons">
+      <button class="action clear" type="button">C</button>
+      <button class="action" type="button">DEL</button>
+      <button class="operator" type="button">%</button>
+      <button class="operator" type="button">/</button>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 mt-8">
-        <!-- Header -->
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 bg-gradient-to-r from-white via-slate-200 to-red-400 bg-clip-text text-transparent">
-                YouTube Description, Caption & Tag Generator
-            </h1>
-            <p class="text-slate-400 text-sm sm:text-base">
-                Enter your video topic below to generate SEO-optimized titles, structured descriptions, Shorts captions, and high-ranking tags.
-            </p>
-        </div>
+      <button class="number" type="button">7</button>
+      <button class="number" type="button">8</button>
+      <button class="number" type="button">9</button>
+      <button class="operator" type="button">*</button>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- Left Column: Input Form -->
-            <div class="lg:col-span-5">
-                <div class="glass-card rounded-2xl p-6 shadow-xl sticky top-24">
-                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-Sliders text-red-500"></i> Video Details
-                    </h2>
+      <button class="number" type="button">4</button>
+      <button class="number" type="button">5</button>
+      <button class="number" type="button">6</button>
+      <button class="operator" type="button">-</button>
 
-                    <form id="generatorForm" class="space-y-4">
-                        <!-- Topic Input -->
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                                Video Topic / Main Keyword *
-                            </label>
-                            <input type="text" id="topic" required
-                                placeholder="e.g., How to Learn Python in 2026"
-                                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                        </div>
+      <button class="number" type="button">1</button>
+      <button class="number" type="button">2</button>
+      <button class="number" type="button">3</button>
+      <button class="operator" type="button">+</button>
 
-                        <!-- Category & Tone -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                                    Niche / Category
-                                </label>
-                                <select id="niche" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-red-500">
-                                    <option value="tech">Tech & Coding</option>
-                                    <option value="gaming">Gaming</option>
-                                    <option value="education">Education / How-To</option>
-                                    <option value="vlog">Lifestyle & Vlog</option>
-                                    <option value="finance">Finance & Business</option>
-                                    <option value="fitness">Health & Fitness</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                                    Content Tone
-                                </label>
-                                <select id="tone" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-red-500">
-                                    <option value="engaging">Engaging & Hype</option>
-                                    <option value="professional">Professional</option>
-                                    <option value="educational">Step-by-Step Guide</option>
-                                    <option value="casual">Casual & Friendly</option>
-                                </select>
-                            </div>
-                        </div>
+      <button class="number" type="button">0</button>
+      <button class="number" type="button">.</button>
+      <button class="equal" type="button">=</button>
+    </div>
+  </div>
 
-                        <!-- Key Points / Chapters -->
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                                Key Takeaways (Optional, comma-separated)
-                            </label>
-                            <input type="text" id="keypoints"
-                                placeholder="e.g., Basic syntax, Free resources, First project"
-                                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500">
-                        </div>
+  <script>
+    const display = document.getElementById('display');
+    let currentValue = '0';
+    let previousValue = '';
+    let operator = '';
+    let shouldResetDisplay = false;
 
-                        <!-- Channel / Social Links -->
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                                Channel Name or Handle (Optional)
-                            </label>
-                            <input type="text" id="channel"
-                                placeholder="e.g., @CodeMaster"
-                                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500">
-                        </div>
+    function updateDisplay() {
+      display.value = currentValue;
+    }
 
-                        <!-- Submit Button -->
-                        <button type="submit"
-                            class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg shadow-red-600/25 transition duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            Generate SEO Package
-                        </button>
-                    </form>
-                </div>
-            </div>
+    function appendNumber(value) {
+      if (currentValue === '0' || shouldResetDisplay) {
+        currentValue = value;
+        shouldResetDisplay = false;
+      } else {
+        currentValue += value;
+      }
+      updateDisplay();
+    }
 
-            <!-- Right Column: Generated Outputs -->
-            <div class="lg:col-span-7 space-y-6" id="outputSection">
-                
-                <!-- 1. Viral Titles & Captions -->
-                <div class="glass-card rounded-2xl p-6 shadow-xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-base flex items-center gap-2">
-                            <i class="fa-solid fa-bolt text-amber-400"></i> Titles & Shorts Captions
-                        </h3>
-                        <button onclick="copyElementText('captionsOutput', this)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                            <i class="fa-regular fa-copy"></i> Copy All
-                        </button>
-                    </div>
-                    <div id="captionsOutput" class="space-y-2.5 text-sm text-slate-300 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-mono whitespace-pre-wrap">Enter a video topic and click "Generate SEO Package" to see catchy titles and captions...</div>
-                </div>
+    function appendDecimal() {
+      if (shouldResetDisplay) {
+        currentValue = '0.';
+        shouldResetDisplay = false;
+        updateDisplay();
+        return;
+      }
 
-                <!-- 2. Full YouTube Description -->
-                <div class="glass-card rounded-2xl p-6 shadow-xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-base flex items-center gap-2">
-                            <i class="fa-solid fa-align-left text-blue-400"></i> SEO Video Description
-                        </h3>
-                        <button onclick="copyElementText('descriptionOutput', this)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                            <i class="fa-regular fa-copy"></i> Copy Description
-                        </button>
-                    </div>
-                    <textarea id="descriptionOutput" rows="13" readonly
-                        class="w-full text-sm text-slate-300 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-mono focus:outline-none resize-y">Your complete, timestamped YouTube description with hashtags will appear here...</textarea>
-                </div>
+      if (!currentValue.includes('.')) {
+        currentValue += '.';
+        updateDisplay();
+      }
+    }
 
-                <!-- 3. YouTube Tags & Keywords -->
-                <div class="glass-card rounded-2xl p-6 shadow-xl">
-                    <div class="flex items-center justify-between mb-3">
-                        <div>
-                            <h3 class="font-semibold text-base flex items-center gap-2">
-                                <i class="fa-solid fa-tags text-emerald-400"></i> High-Ranking Video Tags
-                            </h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Ready to paste directly into YouTube Studio (500-character limit friendly)</p>
-                        </div>
-                        <button onclick="copyElementText('rawTagsOutput', this)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                            <i class="fa-regular fa-copy"></i> Copy CSV Tags
-                        </button>
-                    </div>
+    function chooseOperator(value) {
+      if (operator && !shouldResetDisplay) {
+        calculate();
+      }
 
-                    <!-- Visual Tag Pills -->
-                    <div id="tagPillsContainer" class="flex flex-wrap gap-2 mb-4 min-h-[40px] p-3 bg-slate-900/40 rounded-xl border border-slate-800/80">
-                        <span class="text-xs text-slate-500 italic">Tags will populate here...</span>
-                    </div>
+      previousValue = currentValue;
+      operator = value;
+      shouldResetDisplay = true;
+    }
 
-                    <!-- Raw Comma-Separated Box -->
-                    <div class="relative">
-                        <textarea id="rawTagsOutput" rows="3" readonly
-                            class="w-full text-xs text-slate-400 bg-slate-900/70 p-3 rounded-xl border border-slate-800 font-mono focus:outline-none"
-                            placeholder="Comma-separated tags..."></textarea>
-                        <span id="charCount" class="absolute bottom-2.5 right-3 text-[11px] text-slate-500">0 / 500 chars</span>
-                    </div>
-                </div>
+    function calculate() {
+      if (!operator || previousValue === '') return;
 
-            </div>
-        </div>
-    </main>
+      const a = Number(previousValue);
+      const b = Number(currentValue);
+      let result = 0;
 
-    <script>
-        const nicheKeywords = {
-            tech: ['tutorial', 'coding', 'software', 'tech review', 'programming', 'developer', 'setup', '2026 guide'],
-            gaming: ['gameplay', 'walkthrough', 'pro tips', 'gaming setup', 'highlights', 'montage', 'best build', 'lets play'],
-            education: ['step by step', 'for beginners', 'explained', 'complete course', 'study tips', 'how to', 'crash course'],
-            vlog: ['day in the life', 'routine', 'behind the scenes', 'storytime', 'lifestyle', 'travel vlog', 'daily vlog'],
-            finance: ['investing', 'passive income', 'personal finance', 'side hustle', 'money tips', 'wealth building', 'financial freedom'],
-            fitness: ['workout routine', 'home workout', 'fitness tips', 'muscle building', 'fat loss', 'healthy lifestyle', 'training']
-        };
+      switch (operator) {
+        case '+':
+          result = a + b;
+          break;
+        case '-':
+          result = a - b;
+          break;
+        case '*':
+          result = a * b;
+          break;
+        case '/':
+          result = b === 0 ? 'Error' : a / b;
+          break;
+        case '%':
+          result = (a * b) / 100;
+          break;
+        default:
+          return;
+      }
 
-        document.getElementById('generatorForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateContent();
-        });
+      currentValue = String(result);
+      operator = '';
+      previousValue = '';
+      shouldResetDisplay = true;
+      updateDisplay();
+    }
 
-        function generateContent() {
-            const rawTopic = document.getElementById('topic').value.trim();
-            if (!rawTopic) return;
+    function clearDisplay() {
+      currentValue = '0';
+      previousValue = '';
+      operator = '';
+      shouldResetDisplay = false;
+      updateDisplay();
+    }
 
-            const niche = document.getElementById('niche').value;
-            const tone = document.getElementById('tone').value;
-            const keypointsInput = document.getElementById('keypoints').value.trim();
-            const channel = document.getElementById('channel').value.trim() || '@YourChannel';
+    function deleteLast() {
+      if (currentValue.length <= 1 || currentValue === 'Error') {
+        currentValue = '0';
+      } else {
+        currentValue = currentValue.slice(0, -1);
+      }
+      updateDisplay();
+    }
 
-            const cleanTopic = capitalizeWords(rawTopic);
-            const baseKeyword = rawTopic.toLowerCase();
-            const year = new Date().getFullYear();
+    document.querySelectorAll('.number').forEach((button) => {
+      button.addEventListener('click', () => {
+        const value = button.textContent;
+        if (value === '.') appendDecimal();
+        else appendNumber(value);
+      });
+    });
 
-            // 1. Generate Titles & Captions
-            const titlesAndCaptions = [
-                `📌 CLICKBAIT / VIRAL TITLES:`,
-                `• ${cleanTopic}: The Ultimate ${year} Guide (Step-by-Step)`,
-                `• I Tried ${cleanTopic} for 30 Days — Here's What Happened!`,
-                `• Stop Doing ${cleanTopic} Wrong! Do THIS Instead 💡`,
-                `• ${cleanTopic} Explained in 10 Minutes (Beginner to Pro)`,
-                ``,
-                `📱 SHORTS / REELS / TIKTOK CAPTIONS:`,
-                `• The secret to ${baseKeyword} nobody tells you 👀🔥 #shorts #${slugify(baseKeyword)}`,
-                `• Save this before you start ${baseKeyword}! 🚀 Drop a "🔥" if this helped!`,
-                `• POV: You finally mastered ${baseKeyword} in ${year} 💯✨`
-            ].join('\n');
+    document.querySelectorAll('.operator').forEach((button) => {
+      button.addEventListener('click', () => chooseOperator(button.textContent));
+    });
 
-            document.getElementById('captionsOutput').textContent = titlesAndCaptions;
-
-            // 2. Process Keypoints / Timestamps
-            const defaultPoints = [
-                `Introduction to ${cleanTopic}`,
-                `Core Concepts & Setup`,
-                `Step-by-Step Demonstration`,
-                `Common Mistakes to Avoid`,
-                `Final Thoughts & Next Steps`
-            ];
-
-            let pointsList = keypointsInput 
-                ? keypointsInput.split(',').map(s => s.trim()).filter(Boolean)
-                : defaultPoints;
-
-            let timestamps = `00:00 - Intro\n`;
-            pointsList.forEach((pt, idx) => {
-                const min = String((idx + 1) * 2).padStart(2, '0');
-                timestamps += `${min}:15 - ${capitalizeWords(pt)}\n`;
-            });
-
-            // 3. Generate Tone Intro
-            let introHook = '';
-            if (tone === 'engaging') {
-                introHook = `Want to master ${cleanTopic} faster than ever? 🚀 In today's video, we break down everything you need to know about ${baseKeyword} so you can get real results right away!`;
-            } else if (tone === 'professional') {
-                introHook = `In this comprehensive guide, we examine ${cleanTopic} and provide a structured framework for implementing ${baseKeyword} effectively in ${year}.`;
-            } else if (tone === 'educational') {
-                introHook = `Welcome to the complete step-by-step tutorial on ${cleanTopic}. Whether you're a complete beginner or looking to sharpen your skills, this guide covers the essentials from start to finish.`;
-            } else {
-                introHook = `Hey everyone! Today we're diving into ${cleanTopic}. I've been getting a lot of questions about ${baseKeyword} lately, so let's break it all down together!`;
-            }
-
-            // 4. Generate Hashtags
-            const mainHash = `#${slugify(baseKeyword)}`;
-            const nicheHash = `#${niche}`;
-            const extraHash = `#${slugify(nicheKeywords[niche][0])}`;
-
-            // 5. Build Full Description
-            const description = `${introHook}
-
-🔥 Don't forget to LIKE this video and SUBSCRIBE to ${channel} for more weekly videos on ${baseKeyword}!
-
-📌 WHAT WE COVER IN THIS VIDEO:
-${pointsList.map(p => `✅ ${capitalizeWords(p)}`).join('\n')}
-
-⏱️ TIMESTAMPS / CHAPTERS:
-${timestamps}
-🔗 HELPFUL LINKS & RESOURCES:
-• Free Checklist / Guide: https://example.com/resources
-• Recommended Tools: https://example.com/tools
-
-📱 CONNECT WITH ME:
-• Instagram: https://instagram.com/${channel.replace('@', '')}
-• Twitter/X: https://x.com/${channel.replace('@', '')}
-• Website: https://example.com
-
-💬 QUESTION OF THE DAY:
-What is your biggest challenge with ${baseKeyword} right now? Let me know in the comments below! 👇
-
----
-${mainHash} ${nicheHash} ${extraHash} #youtube${year}`;
-
-            document.getElementById('descriptionOutput').value = description;
-
-            // 6. Generate SEO Tags (under 500 chars)
-            const words = baseKeyword.split(' ').filter(w => w.length > 2);
-            const rawTagSet = new Set([
-                baseKeyword,
-                `${baseKeyword} ${year}`,
-                `how to ${baseKeyword}`,
-                `${baseKeyword} tutorial`,
-                `${baseKeyword} for beginners`,
-                `${baseKeyword} tips`,
-                `best ${baseKeyword}`,
-                `${baseKeyword} guide`,
-                ...nicheKeywords[niche].map(k => `${baseKeyword} ${k}`),
-                ...nicheKeywords[niche],
-                ...words
-            ]);
-
-            const finalTags = [];
-            let currentLen = 0;
-
-            for (let tag of rawTagSet) {
-                if (currentLen + tag.length + 2 <= 490) {
-                    finalTags.push(tag);
-                    currentLen += tag.length + 2;
-                }
-            }
-
-            // Render Tag Pills
-            const pillsContainer = document.getElementById('tagPillsContainer');
-            pillsContainer.innerHTML = '';
-            finalTags.forEach(t => {
-                const span = document.createElement('span');
-                span.className = 'tag-pill text-xs px-2.5 py-1 rounded-full font-medium';
-                span.textContent = t;
-                pillsContainer.appendChild(span);
-            });
-
-            // Render Raw CSV Tags
-            const csvString = finalTags.join(', ');
-            document.getElementById('rawTagsOutput').value = csvString;
-            document.getElementById('charCount').textContent = `${csvString.length} / 500 chars`;
-        }
-
-        function capitalizeWords(str) {
-            return str.replace(/\b\w/g, char => char.toUpperCase());
-        }
-
-        function slugify(str) {
-            return str.toLowerCase().replace(/[^a-z0-9]/g, '');
-        }
-
-        function copyElementText(elementId, btn) {
-            const el = document.getElementById(elementId);
-            const textToCopy = el.value !== undefined ? el.value : el.textContent;
-
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied!`;
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                }, 2000);
-            });
-        }
-
-        // Trigger default demo on load
-        window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('topic').value = 'Build an AI Website in 10 Minutes';
-            document.getElementById('keypoints').value = 'Choosing the stack, Designing the UI, Connecting the API, Free deployment';
-            generateContent();
-        });
-    </script>
-</bod
+    document.querySelector('.equal').addEventListener('click', calculate);
+    document.querySelector('.clear').addEventListener('click', clearDisplay);
+    document.querySelector('.action:not(.clear)').addEventListener('click', deleteLast);
+  </script>
+</body>
+</html>
